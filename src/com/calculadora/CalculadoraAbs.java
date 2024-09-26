@@ -4,6 +4,9 @@
  */
 package com.calculadora;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  *
  * @author tarde
@@ -48,8 +51,9 @@ public class CalculadoraAbs extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setMinimumSize(new java.awt.Dimension(350, 400));
-        setPreferredSize(new java.awt.Dimension(350, 400));
+        setMinimumSize(new java.awt.Dimension(420, 400));
+        setPreferredSize(new java.awt.Dimension(420, 400));
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButtonClear.setText("C");
@@ -184,7 +188,7 @@ public class CalculadoraAbs extends javax.swing.JFrame {
         jLabelRes.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
         jLabelRes.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabelRes.setText("0");
-        jLabelRes.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 7));
+        jLabelRes.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 10));
         jLabelRes.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jLabelRes.setInheritsPopupMenu(false);
         jLabelRes.setOpaque(true);
@@ -310,12 +314,12 @@ public class CalculadoraAbs extends javax.swing.JFrame {
     private void jButtonSumarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSumarActionPerformed
         // TODO add your handling code here:
         String res;
-        res = this.jLabelRes.getText();
-        if (this.comprobarJLabel(res)) {            
-            if (this.comprobarSimbolos(res)) {                
-            }
-        } else {            
-            this.jLabelRes.setText(res + " + ");
+        res = this.jLabelRes.getText();     
+        if (this.comprobarJLabel(res)) {                        
+        } else { 
+            if (!this.comprobarSimbolos(res.trim())) {
+                this.jLabelRes.setText(res + " + ");
+            }            
         }
     }//GEN-LAST:event_jButtonSumarActionPerformed
 
@@ -323,11 +327,11 @@ public class CalculadoraAbs extends javax.swing.JFrame {
         // TODO add your handling code here:
         String res;
         res = this.jLabelRes.getText();
-        if (this.comprobarJLabel(res)) {            
-            if (this.comprobarSimbolos(res)) {                
-            }
-        } else {            
-            this.jLabelRes.setText(res + " - ");
+        if (this.comprobarJLabel(res)) {                        
+        } else { 
+            if (!this.comprobarSimbolos(res.trim())) {
+                this.jLabelRes.setText(res + " - ");
+            }            
         }
     }//GEN-LAST:event_jButtonRestarActionPerformed
 
@@ -335,11 +339,11 @@ public class CalculadoraAbs extends javax.swing.JFrame {
         // TODO add your handling code here:
         String res;
         res = this.jLabelRes.getText();
-        if (this.comprobarJLabel(res)) {            
-            if (this.comprobarSimbolos(res)) {                
-            }
-        } else {            
-            this.jLabelRes.setText(res + " * ");
+        if (this.comprobarJLabel(res)) {                        
+        } else { 
+            if (!this.comprobarSimbolos(res.trim())) {
+                this.jLabelRes.setText(res + " * ");
+            }            
         }
     }//GEN-LAST:event_jButtonMultiActionPerformed
 
@@ -347,11 +351,11 @@ public class CalculadoraAbs extends javax.swing.JFrame {
         // TODO add your handling code here:
         String res;
         res = this.jLabelRes.getText();
-        if (this.comprobarJLabel(res)) {            
-            if (this.comprobarSimbolos(res)) {                
-            }
-        } else {            
-            this.jLabelRes.setText(res + " / ");
+        if (this.comprobarJLabel(res)) {                        
+        } else { 
+            if (!this.comprobarSimbolos(res.trim())) {
+                this.jLabelRes.setText(res + " / ");
+            }            
         }
     }//GEN-LAST:event_jButtonDivActionPerformed
 
@@ -362,14 +366,9 @@ public class CalculadoraAbs extends javax.swing.JFrame {
 
     private void jButtonIgualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIgualActionPerformed
         // TODO add your handling code here:
-        int res = 0;
-        int cifra = 0;
-        String[] label;
-        label = this.jLabelRes.getText().split(" ");
-        for (int i = 0; i < label.length; i++) {
-            
-        }
-        this.jLabelRes.setText(Integer.toString(res));
+        String linea = this.jLabelRes.getText();        
+        ArrayList<String> operadores = (ArrayList) Arrays.asList(linea.split("[\\d\\.]"));
+        ArrayList<String> numeros = (ArrayList) Arrays.asList(linea.split("[\\+\\-\\/\\*]"));      
     }//GEN-LAST:event_jButtonIgualActionPerformed
 
     public boolean comprobarJLabel(String res) {
@@ -380,8 +379,9 @@ public class CalculadoraAbs extends javax.swing.JFrame {
         }
     }
     
-    public boolean comprobarSimbolos(String res) {
-        if (res.contains("+") || res.contains("-") || res.contains("x") || res.contains("/")) {
+    public boolean comprobarSimbolos(String res) {  
+        char c = res.charAt(res.length() - 1);
+        if (c == '+' || c == '-' || c == '*' || c == '/') {
             return true;
         } else {
             return false;

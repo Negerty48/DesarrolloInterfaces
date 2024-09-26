@@ -25,7 +25,6 @@ public class CalculadoraGrid extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jLabelRes = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
