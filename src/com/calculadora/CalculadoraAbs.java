@@ -196,6 +196,11 @@ public class CalculadoraAbs extends javax.swing.JFrame {
 
         jButtonPunto.setFont(new java.awt.Font("Liberation Sans", 0, 36)); // NOI18N
         jButtonPunto.setText("·");
+        jButtonPunto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonPuntoActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButtonPunto, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 300, 60, 50));
 
         pack();
@@ -318,7 +323,7 @@ public class CalculadoraAbs extends javax.swing.JFrame {
         if (this.comprobarJLabel(res)) {                        
         } else { 
             if (!this.comprobarSimbolos(res.trim())) {
-                this.jLabelRes.setText(res + " + ");
+                this.jLabelRes.setText(res + "+");
             }            
         }
     }//GEN-LAST:event_jButtonSumarActionPerformed
@@ -330,7 +335,7 @@ public class CalculadoraAbs extends javax.swing.JFrame {
         if (this.comprobarJLabel(res)) {                        
         } else { 
             if (!this.comprobarSimbolos(res.trim())) {
-                this.jLabelRes.setText(res + " - ");
+                this.jLabelRes.setText(res + "-");
             }            
         }
     }//GEN-LAST:event_jButtonRestarActionPerformed
@@ -342,7 +347,7 @@ public class CalculadoraAbs extends javax.swing.JFrame {
         if (this.comprobarJLabel(res)) {                        
         } else { 
             if (!this.comprobarSimbolos(res.trim())) {
-                this.jLabelRes.setText(res + " * ");
+                this.jLabelRes.setText(res + "*");
             }            
         }
     }//GEN-LAST:event_jButtonMultiActionPerformed
@@ -354,7 +359,7 @@ public class CalculadoraAbs extends javax.swing.JFrame {
         if (this.comprobarJLabel(res)) {                        
         } else { 
             if (!this.comprobarSimbolos(res.trim())) {
-                this.jLabelRes.setText(res + " / ");
+                this.jLabelRes.setText(res + "/");
             }            
         }
     }//GEN-LAST:event_jButtonDivActionPerformed
@@ -365,11 +370,68 @@ public class CalculadoraAbs extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonClearActionPerformed
 
     private void jButtonIgualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIgualActionPerformed
-        // TODO add your handling code here:
-        String linea = this.jLabelRes.getText();        
-        ArrayList<String> operadores = (ArrayList) Arrays.asList(linea.split("[\\d\\.]"));
-        ArrayList<String> numeros = (ArrayList) Arrays.asList(linea.split("[\\+\\-\\/\\*]"));      
+        // TODO add your handling code here:        
+        String linea = this.jLabelRes.getText();  
+        String[] o = linea.split("[\\d\\.]");
+        String[] n = linea.split("[\\+\\-\\/\\*]");
+        ArrayList<String> operadores = new ArrayList<>();
+        ArrayList<String> numeros = new ArrayList<>(Arrays.asList(n));  
+        for (String op : o) {
+            if (!op.isBlank()) {
+                operadores.add(op);
+            }
+        }
+        while (operadores.contains("*")) {
+            int i = operadores.indexOf("*");
+            double n1 = Double.parseDouble(numeros.get(i));
+            double n2 = Double.parseDouble(numeros.get(i + 1));
+            double res = n1 * n2;
+            numeros.set(i, Double.toString(res));
+            operadores.remove(i);           
+            numeros.remove(i + 1);           
+        }        
+        while (operadores.contains("/")) {
+            int i = operadores.indexOf("/");
+            double n1 = Double.parseDouble(numeros.get(i));
+            double n2 = Double.parseDouble(numeros.get(i + 1));
+            double res = n1 / n2;
+            numeros.set(i, Double.toString(res));
+            operadores.remove(i);           
+            numeros.remove(i + 1);
+        }        
+        while (operadores.size() > 0) {
+            if (operadores.get(0).equals("+")) {
+                int i = operadores.indexOf("+");
+                double n1 = Double.parseDouble(numeros.get(i));
+                double n2 = Double.parseDouble(numeros.get(i + 1));
+                double res = n1 + n2;
+                numeros.set(i, Double.toString(res));
+                operadores.remove(i);           
+                numeros.remove(i + 1);
+            } else {
+                int i = operadores.indexOf("-");
+                double n1 = Double.parseDouble(numeros.get(i));
+                double n2 = Double.parseDouble(numeros.get(i + 1));
+                double res = n1 - n2;
+                numeros.set(i, Double.toString(res));
+                operadores.remove(i);           
+                numeros.remove(i + 1);
+            }
+        }        
+        this.jLabelRes.setText(numeros.getFirst());
     }//GEN-LAST:event_jButtonIgualActionPerformed
+
+    private void jButtonPuntoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPuntoActionPerformed
+        // TODO add your handling code here:
+        String res;
+        res = this.jLabelRes.getText();     
+        if (this.comprobarJLabel(res)) {                        
+        } else { 
+            if (!this.comprobarSimbolos(res.trim())) {
+                this.jLabelRes.setText(res + ".");
+            }            
+        }
+    }//GEN-LAST:event_jButtonPuntoActionPerformed
 
     public boolean comprobarJLabel(String res) {
         if (res.equals("0")) {
